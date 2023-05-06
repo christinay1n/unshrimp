@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Unshrimp!</title>
+        <!-- don't mind these: -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- these load the stylesheets: -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Barlow:500" />
+        <link rel="stylesheet" href="./css/reset.css" />
+        <link rel="stylesheet" href="./css/style.css" />
+        <!-- these load the teachable machine libraries: -->
+        <!-- more documentation at https://github.com/googlecreativelab/teachablemachine-libraries -->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+        <!-- these load our code: -->
+        <script type="module" src="./js/model-runner.js"></script>
+        <script type="module" src="./js/bar-graph.js"></script>
+        <script type="module" src="./js/favicon-change.js"></script>
+        <!-- add favicon -->
+        <link rel="icon" type="image/x-icon" class="rounded-icon" id="favicon" href="https://cdn.glitch.global/8fdd825f-ed52-4f9e-b1fc-206c40603156/shrimp4.png?v=1681936633174">
+        <!-- set background image -->
+        <style>
+          body {
+            background-image: url("https://cdn.glitch.global/8fdd825f-ed52-4f9e-b1fc-206c40603156/pattern.png?v=1682755923115");
+            background-color: #cccccc;
+            background-size: 250px;
+          }
+        </style>
+    </head>
+  
+    <body>
+        <div class = "header">
+            <h1> Unshrimp </h1>
+        </div>
+        <div class = "container">
+            <section id="model">
+                <h2> Check your posture! </h2>
+                <h3>
+                    <div id="advice"></div>
+                </h3>
+                <div id="webcam-wrapper">
+                    <div class="loader"></div>
+                    <canvas id="webcam-pose-canvas"></canvas>
+                </div>
+                <div id="graph-wrapper"></div>
+            </section>
+
+            <script type="module">
+                import { setupModel } from './js/model-runner.js';
+                import { setupBarGraph, updateBarGraph } from './js/bar-graph.js';
+                import { setupFavicon, updateFavicon } from './js/favicon-change.js';
+                // replace this url with our own
+                let URL = 'https://teachablemachine.withgoogle.com/models/Ru4A_YJqi/';
+                // setupBarGraph is defined in the js/bar-graph.js file
+                setupBarGraph(URL);
+                // setupFavicon is defined in the js/favicon-change.js file
+                setupFavicon();
+                // setupModel is defined in the js/model-runner.js file
+                setupModel(URL, data => {
+                    updateBarGraph(data);
+                    updateFavicon(data);
+                });
+            </script>
+        </div>
+    </body>
+</html>
